@@ -11,7 +11,7 @@ class ProductDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0), // here the desired height
+        preferredSize: const Size.fromHeight(50.0), // here the desired height
         child: CustomAppBars(
           isTrue:false,
           prefixIcon: Icons.arrow_back,
@@ -29,7 +29,7 @@ class ProductDetailView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
+                   Text(
                     "Thực phẩm bảo vệ dức khỏe dạ dày Tịnh vị Linh - lọ 83g"
                     ,
                     style: TextStyle(
@@ -53,7 +53,7 @@ class ProductDetailView extends StatelessWidget {
                     18),
 
                   ),
-                  Divider(height: 0.1,color: Colors.grey.withOpacity(0.1),),
+                  Divider(height: 0.1, color: Colors.grey.withOpacity(0.1),),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text("Mô tả",style: TextStyle(color: Colors.black,
@@ -102,7 +102,7 @@ class ProductDetailView extends StatelessWidget {
                         color: Colors.white,
                         size: 24.0,
                       ),
-                    ), Text("Thêm vào giỏ hàng", style: TextStyle(color:
+                    ), Text("Thêm vào giỏ hàng", style: const TextStyle(color:
                     Colors.white, fontSize: 16),)
                   ],
                 ),

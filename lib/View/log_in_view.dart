@@ -1,16 +1,20 @@
+import 'package:beedu_app_training/Controller/sign_in_controller.dart';
+import 'package:beedu_app_training/Provider/sign_in_provider.dart';
 import 'package:beedu_app_training/Widget/custom_button.dart';
 import 'package:beedu_app_training/const/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart';
 import '../main.dart';
-
-class LoginScreen extends StatelessWidget {
-  bool _isObscure = true;
+const SERVER_IP = 'https://dongythientrithuc.vn/api';
+class LoginScreen extends GetView<SignInController> {
   late var shouldValidateData = false;
-  TextEditingController _controller = TextEditingController();
+  TextEditingController _controllerUser = TextEditingController();
+  TextEditingController _controllerPass = TextEditingController();
   late final FocusNode _focusNode = FocusNode();
+  final storage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +38,30 @@ class LoginScreen extends StatelessWidget {
                   fit: BoxFit.cover,),
               ),
             ),
-            CustomInputTextField(text : "Tài khoản",iconPrefix: Icons.account_box_sharp,),
+            CustomInputTextField(text : "Tài khoản",iconPrefix: Icons
+                .account_box_sharp,password:false,controller: _controllerUser,),
             CustomInputTextField(text : "Mật khẩu",iconPrefix: Icons.lock,
-              password:true),
+              password:true,controller: _controllerPass,),
             SizedBox(height : 20.h),
-            CustomButton(text: "Đăng nhập",),
+            CustomButton(text: "Đăng nhập",
+            onTap: () async {
+              var username = _controllerUser.text;
+              var password = _controllerPass.text;
+              var jwt = await attemptLogIn(username, password);
+              if (jwt != null) {
+                print(jwt);
+                storage.write(key: "jwt", value: jwt);
+                print("login success!");
+
+              } else {
+                print("Error : $jwt");
+
+              }
+
+            }
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-
               child: RichText(
                 text: TextSpan(
                   text: "Bạn chưa có tài khoản?",
@@ -61,13 +81,30 @@ class LoginScreen extends StatelessWidget {
   }
   static TextStyle textStyle = TextStyle(color: ColorConst.primaryColor,
       fontSize: 13);
+
+  Future<String?> attemptLogIn(String username, String password) async {
+    print("waiting .... ");
+    var res = await post(
+        Uri.parse('$SERVER_IP/auth/login'),
+        body: {
+          "username": username,
+          "password": password
+        }
+    );
+    if(res.statusCode == 200) return res.body;
+    else
+      print(res.statusCode );
+    return null;
+  }
+
 }
 
 class CustomInputTextField extends StatefulWidget {
   String? text;
   IconData? iconPrefix;
   bool? password = true;
-  CustomInputTextField({this.text,this.iconPrefix,this.password});
+  TextEditingController controller = TextEditingController();
+  CustomInputTextField({this.text,this.iconPrefix,this.password,required this.controller});
 
   @override
   _CustomInputTextFieldState createState() => _CustomInputTextFieldState();
@@ -76,15 +113,14 @@ class CustomInputTextField extends StatefulWidget {
 class _CustomInputTextFieldState extends State<CustomInputTextField> {
   bool _isObscure = true;
   late var shouldValidateData = false;
-  TextEditingController _controller = TextEditingController();
   late final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal : 20.w,vertical: 10.h),
-      child: TextFormField(
+      child: widget.password == true ? TextFormField(
         focusNode: _focusNode,
-        controller: _controller,
+        controller: widget.controller,
         obscureText: _isObscure,
         decoration: InputDecoration(
             prefixIcon: Icon(widget.iconPrefix,color: ColorConst
@@ -94,7 +130,7 @@ class _CustomInputTextFieldState extends State<CustomInputTextField> {
             hintText: widget.text,
             hintMaxLines: 1,
             hintStyle: TextStyle(color : Colors.grey),
-             suffixIcon: widget.password == true ?IconButton(
+             suffixIcon: IconButton(
                 icon: Icon(
                   _isObscure ? Icons.visibility : Icons
                       .visibility_off,color: ColorConst.primaryColor,),
@@ -102,7 +138,19 @@ class _CustomInputTextFieldState extends State<CustomInputTextField> {
                   setState(() {
                     _isObscure = !_isObscure;
                   });
-                }): Container()),
+                })),
+      ) : TextFormField(
+        focusNode: _focusNode,
+        controller: widget.controller,
+        decoration: InputDecoration(
+            prefixIcon: Icon(widget.iconPrefix,color: ColorConst
+                .green52,),
+            // errorText: "Mật khẩu không được để trống",
+            // errorStyle: TextStyle(color: Colors.red,fontSize: 12),
+            hintText: widget.text,
+            hintMaxLines: 1,
+            hintStyle: TextStyle(color : Colors.grey),
+           ),
       ),
 
     );

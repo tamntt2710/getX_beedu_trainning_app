@@ -1,7 +1,9 @@
 import 'package:beedu_app_training/const/constant.dart';
+import 'package:beedu_app_training/ui/home/controllers/slider_home_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 class MyImageView extends StatelessWidget{
 
@@ -11,47 +13,35 @@ class MyImageView extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 5),
         child: FittedBox(
           fit: BoxFit.fill,
-          child: Image.asset(imgPath,),
+          child: Image.network("http://dongythientrithuc"
+              ".vn/public/upload/images/slides/${imgPath}",),
         )
     );
   }
 }
-class CustomIndicator extends StatefulWidget {
-  const CustomIndicator({Key? key}) : super(key: key);
 
-  @override
-  _CustomIndicatorState createState() => _CustomIndicatorState();
-}
-
-class _CustomIndicatorState extends State<CustomIndicator> {
-  int currentPos = 0;
-  List<String> listPaths = [
-    "assets/assets/images/banner-dong-y-thien-tri-thuc-home.jpg",
-    "assets/assets/images/banner-dong-y-thien-tri-thuc-1.jpg"
-  ];
+class CustomIndicatorState extends GetView<SliderHomeController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: Stack(
         children: [
-          CarouselSlider.builder(
-            itemCount: listPaths.length,
+          Obx(() {
+
+            return CarouselSlider(
             options: CarouselOptions(
-              viewportFraction: 1.0, // full screen show slide
+                viewportFraction: 1.0, // full screen show slide
                 autoPlay: true,
                 onPageChanged: (index, reason) {
-                  setState(() {
-                    currentPos = index;
-                  });
-                }
-            ),
-            itemBuilder: (context,index,_){
-              return MyImageView(listPaths[index]);
+                  // controller.slideController = index;
+                      }),
+              items : controller.items.map((element) =>
+                MyImageView(element)).toList());
+
             },
           ),
           Positioned.fill(
@@ -59,11 +49,11 @@ class _CustomIndicatorState extends State<CustomIndicator> {
               alignment: Alignment.bottomCenter,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: listPaths.map((url) {
-                  int index = listPaths.indexOf(url);
+                children: controller.items.map((url) {
+                  int index = controller.items.indexOf(url);
                   return Container(
-                    width:  currentPos == index ? 12.0 : 6.0,
-                    height: currentPos == index ? 12.0 : 6.0,
+                    width:  controller.currentSlide == index ? 12.0 : 6.0,
+                    height: controller.currentSlide == index ? 12.0 : 6.0,
                     margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,

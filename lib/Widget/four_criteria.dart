@@ -90,7 +90,7 @@ class _CenterItemState extends State<CenterItem> {
               transform: Matrix4.identity()..setEntry(3, 2, 0.001),
               // ..rotateY(pi), // allow to rotate
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 decoration: BoxDecoration(
                   border: widget.leftLocation == 0
                       ? Border(
@@ -120,10 +120,10 @@ class _CenterItemState extends State<CenterItem> {
                             height: 50.h,
                             child: FittedBox(
                                 fit: BoxFit.cover,
-                                child: Image.asset(widget.urlImg)),
+                                child: Image.asset(widget.urlImg,fit: BoxFit.fill,)),
                           ),
                           SizedBox(
-                            height: 7.h,
+                            height: 5.h,
                           ),
                           Center(
                             child: Text(

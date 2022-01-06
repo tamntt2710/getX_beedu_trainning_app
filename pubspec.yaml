@@ -39,7 +39,11 @@ dependencies:
   fancy_bottom_navigation: ^0.3.3
   smooth_page_indicator: ^1.0.0+2
   flutter_svg: ^1.0.0
-
+  get: ^4.6.1
+  dio: ^4.0.4
+  http: ^0.13.4
+  flutter_secure_storage: ^5.0.2
+  get_storage: ^2.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

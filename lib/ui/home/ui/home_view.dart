@@ -4,25 +4,28 @@ import 'package:beedu_app_training/Widget/slide_banner_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../main.dart';
+import '../../../main.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0), // here the desired height
-        child: CustomAppBars(
-          isTrue:true,
-          assetData : 'assets/assets/images/logo_web.png',
-          pageName : "Thiện Tri Thức",
-        ),
-      ),
-      body: SingleChildScrollView(
+    return
+      Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50.0), // here the desired height
+            child: CustomAppBars(
+              isTrue:true,
+              assetData : 'assets/assets/images/logo_web.png',
+              pageName : "Thiện Tri Thức",
+            ),
+          ),
+        body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomIndicator(),
+             CustomIndicatorState(),
               FourCriteria(),
               SizedBox(height: 20.h,),
               ListNewProducts("Sản phẩm mới",true),
@@ -30,7 +33,7 @@ class HomePage extends StatelessWidget {
               ListNewProducts("Bài viết mới",false),
             ],
         ),
-      ),
-    );
+      ));
+
   }
 }

@@ -10,6 +10,7 @@ class NewPages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0), // here the desired height
@@ -21,6 +22,7 @@ class NewPages extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        physics: const ScrollPhysics(),
         child: Column(
           children: [
             Container(
@@ -63,6 +65,7 @@ class NewPages extends StatelessWidget {
             ),
             SizedBox(
               child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: 30,

@@ -1,15 +1,13 @@
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+
+import 'package:beedu_app_training/ui/main/binding/main_page_binding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'View/home_view.dart';
-import 'View/news_view.dart';
-import 'View/product_shopping_cart.dart';
-import 'View/profile_view.dart';
-import 'Widget/four_criteria.dart';
-import 'Widget/list_new_product.dart';
-import 'Widget/slide_banner_home.dart';
+import 'package:get/get.dart';
+
 import 'const/constant.dart';
+import 'ui/main/main_page.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -21,14 +19,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(360, 690),
-      builder: () => MaterialApp(
-        title: 'Thiện tri thức',
-        theme: ThemeData(
-          primaryColor: ColorConst.primaryColor,
+    return GetMaterialApp(
+      initialBinding: MainPageBinding(),
+      home: ScreenUtilInit(
+        designSize: Size(360, 690),
+        builder: () => MaterialApp(
+          title: 'Thiện tri thức',
+          theme: ThemeData(
+            primaryColor: ColorConst.primaryColor,
+          ),
+          home: const MyHomePage(),
         ),
-        home: const MyHomePage(),
       ),
     );
   }
@@ -39,54 +40,10 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomeScreen();
+    return MainPage();
   }
 }
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  GlobalKey bottomNavigationKey = GlobalKey();
-  int currentPage = 0;
-  PageController controller = PageController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: PageView(
-            controller : controller,
-          children : [
-            HomePage(),
-            NewPages(),
-            ProductCart(),
-            Profile()
-          ]
-
-        ),
-        bottomNavigationBar: FancyBottomNavigation(
-          tabs: [
-            TabData(iconData: Icons.home, title: "Home"),
-            TabData(iconData: Icons.eleven_mp_outlined, title: "Tin tức"),
-            TabData(iconData: Icons.shopping_cart, title: "Sản phẩm"),
-            TabData(iconData: Icons.account_circle, title: "Cá nhân")
-          ],
-          initialSelection: 1,
-          key: bottomNavigationKey,
-          onTabChangedListener: (position) {
-            controller.jumpToPage(position);
-            setState(() {
-              currentPage = position;
-            });
-          },
-        )
-    );
-  }
-
-}
 
 class CustomAppBars extends PreferredSize{
   CustomAppBars({String? assetData,IconData? prefixIcon, IconData? iconData,String?
@@ -116,7 +73,6 @@ class CustomAppBars extends PreferredSize{
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-
             Icon(iconDataAfter,color: ColorConst.primaryColor,size: 30,),
             Padding(
               padding: const EdgeInsets.only(left: 15.0),

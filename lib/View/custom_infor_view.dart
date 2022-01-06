@@ -1,7 +1,7 @@
 import 'package:beedu_app_training/Widget/custom_button.dart';
 import 'package:beedu_app_training/const/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 import '../main.dart';
 class CustomInfor extends StatefulWidget {
@@ -37,7 +37,7 @@ class _CustomInforState extends State<CustomInfor> {
               FillInforCustom('Xã/phường/thị trấn'),
               FillInforCustom('Quận/Huyện'),
               FillInforCustom('Chọn tỉnh/Thành phố'),
-              CustomButton(text: "Xác nhận",)
+              CustomButton(text: "Xác nhận",onTap: (){},)
             ],
           ),
 
